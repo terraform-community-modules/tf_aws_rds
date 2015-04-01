@@ -9,6 +9,10 @@ variable "rds_is_multi_az" {
     default = "false"
 }
 
+variable "rds_storage_type" {
+    default = "standard"
+}
+
 variable "rds_allocated_storage" {
     description = "The allocated storage in GBs"
     // You just give it the number, e.g. 10

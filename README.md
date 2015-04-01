@@ -13,6 +13,7 @@ Input Variables
 - `rds_instance_name`
 - `rds_is_multi_az` - Defaults to false. Set to true for a multi-az
   instance.
+- `rds_storage_type` - Defaults to standard (magnetic)
 - `rds_allocated_storage` - The number of GBs to allocate. Input must be an
   integer, e.g. `10`
 - `rds_engine_type` - Engine type, such as `mysql` or `postgres`
