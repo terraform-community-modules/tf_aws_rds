@@ -23,13 +23,13 @@ variable "rds_engine_type" {
     // - postgres
     // - oracle-*
     // - sqlserver-*
-    // http://docs.aws.amazon.com/AmazonRDS/latest/CommandLineReference/CLIReference-cmd-CreateDBInstance.html
-    // See --engine
+    // See http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
+    // --engine
 }
 
 variable "rds_engine_version" {
     // For valid engine versions, see:
-    // See http://docs.aws.amazon.com/AmazonRDS/latest/CommandLineReference/CLIReference-cmd-CreateDBInstance.html
+    // See http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
     // --engine-version
 
 }
