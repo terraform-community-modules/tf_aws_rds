@@ -49,6 +49,10 @@ variable "db_parameter_group" {
     default = "default.mysql5.6"
 }
 
+variable "publicly_accessible" {
+    default = "false"
+}
+
 // RDS Subnet Group Variables
 variable "subnet_az1" {}
 variable "subnet_az2" {}
