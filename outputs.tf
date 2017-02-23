@@ -13,7 +13,7 @@ output "rds_instance_address" {
 }
 
 # Output endpoint (hostname:port) of the RDS instance
-output "rds_instance_address" {
+output "rds_instance_endpoint" {
     value = "${aws_db_instance.main_rds_instance.endpoint}"
 }
 
