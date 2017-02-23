@@ -10,7 +10,7 @@ variable "rds_instance_identifier" {
 
 variable "rds_is_multi_az" {
     description = "Set to true on production"
-    default = "false"
+    default = false
 }
 
 variable "rds_storage_type" {
@@ -24,6 +24,7 @@ variable "rds_allocated_storage" {
 }
 
 variable "rds_engine_type" {
+    description = "Database engine type"
     # Valid types are
     # - mysql
     # - postgres
@@ -34,6 +35,7 @@ variable "rds_engine_type" {
 }
 
 variable "rds_engine_version" {
+    description = "Database engine version, depends on engine type"
     # For valid engine versions, see:
     # See http://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
     # --engine-version
@@ -41,7 +43,7 @@ variable "rds_engine_version" {
 }
 
 variable "rds_instance_class" {
-    description = "Instance sizing"
+    description = "Class of RDS instance"
     # Valid values
     # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 }
@@ -50,22 +52,22 @@ variable "database_name" {
     description = "The name of the database to create"
 }
 
-# Sefl-explainatory variables
+# Self-explainatory variables
 variable "database_user" {}
 variable "database_password" {}
-
 variable "database_port" {}
 
 # This is for a custom parameter to be passed to the DB
 # We're "cloning" default ones, but we need to specify which should be copied
 variable "db_parameter_group" {
+    description = "Parameter group, depends on DB engine used"
     # default = "mysql5.6"
-    default = "postgres9.5"
+    # default = "postgres9.5"
 }
 
 variable "publicly_accessible" {
-    description = "If database can be publicly available (NOT recommended)"
-    default = "false"
+    description = "Determines if database can be publicly available (NOT recommended)"
+    default = false
 }
 
 # RDS Subnet Group Variables

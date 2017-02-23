@@ -17,6 +17,7 @@ resource "aws_db_instance" "main_rds_instance" {
     username = "${var.database_user}"
     password = "${var.database_password}"
 
+    port = "${var.database_port}"
     # Because we're assuming a VPC, we use this option, but only one SG id
     vpc_security_group_ids = ["${aws_security_group.main_db_access.id}"]
 
@@ -57,18 +58,26 @@ resource "aws_security_group" "main_db_access" {
   name = "Database access"
   description = "Allow access to the database"
   vpc_id = "${var.rds_vpc_id}"
+}
 
-  ingress {
+resource "aws_security_group_rule" "allow_db_access" {
+    type = "ingress"
+
     from_port = "${var.database_port}"
     to_port = "${var.database_port}"
     protocol = "tcp"
     cidr_blocks = ["${var.private_cidr}"]
-  }
 
-  egress {
+    security_group_id = "${aws_security_group.main_db_access.id}"
+}
+
+resource "aws_security_group_rule" "allow_all_outbound" {
+    type = "egress"
+
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+
+    security_group_id = "${aws_security_group.main_db_access.id}"
 }
