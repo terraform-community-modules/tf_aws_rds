@@ -29,10 +29,14 @@ resource "aws_db_instance" "main_rds_instance" {
     multi_az = "${var.rds_is_multi_az}"
     storage_type = "${var.rds_storage_type}"
     publicly_accessible = "${var.publicly_accessible}"
+
+    # Upgrades
+    allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
+    auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
 }
 
 resource "aws_db_parameter_group" "main_rds_instance" {
-    name = "${var.rds_instance_identifier}-custom-params"
+    name = "${var.rds_instance_identifier}-${replace(var.db_parameter_group, ".", "")}-custom-params"
     family = "${var.db_parameter_group}"
 
     # Example for MySQL

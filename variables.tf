@@ -48,6 +48,16 @@ variable "rds_instance_class" {
     # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
 }
 
+variable "auto_minor_version_upgrade" {
+    description = "Allow automated minor version upgrade"
+    default = true
+}
+
+variable "allow_major_version_upgrade" {
+    description = "Allow major version upgrade"
+    default = false
+}
+
 variable "database_name" {
     description = "The name of the database to create"
 }
