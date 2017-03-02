@@ -27,13 +27,14 @@ This module makes the following assumptions:
 - `publicly_accessible` - Defaults to `false`
 - `private_cidr` - CIDR for database security group, eg 10.0.0.0/16
 - `rds_vpc_id` - VPC ID DB will be connected to
+- `allow_major_version_upgrade` - Allow upgrading of major version of database (eg. from Postgres 9.5.x to Postgres 9.6.x), default: false
+- `auto_minor_version_upgrade` - Automatically upgrade minor version of the DB (eg. from Postgres 9.5.3 to Postgres 9.5.4), default: true
 
 ## Outputs
 
 - `rds_instance_id` - The ID of the RDS instance
 - `rds_instance_address` - The Address of the RDS instance
 - `subnet_group_id` - The ID of the Subnet Group
-
 
 ## Usage
 
@@ -46,7 +47,7 @@ resource "aws_subnet" "example" {
 
     vpc_id = "${aws_vpc.public.id}"
     cidr_block = "10.0.${count.index}.0/24"
-    map_public_ip_on_launch = "true"
+    map_public_ip_on_launch = true
 
     availability_zone = "${var.region}${element(var.availability_zones, count.index)}"
 
@@ -123,6 +124,8 @@ module "my_rds_instance" {
 - `publicly_accessible`
 - `private_cidr`
 - `rds_vpc_id`
+- `allow_major_version_upgrade`
+- `auto_minor_version_upgrade`
 
 
 # Authors
