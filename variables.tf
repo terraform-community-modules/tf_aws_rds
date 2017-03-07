@@ -95,3 +95,14 @@ variable "rds_vpc_id" {
     description = "VPC to connect to, used for a security group"
     type = "string"
 }
+
+variable "skip_final_snapshot" {
+    description = "If true (default), no snapshot will be made before deleting DB"
+    default = true
+}
+
+variable "backup_retention_period" {
+    type = "string"
+    description = "How long will we retain backups"
+    default = 0
+}
