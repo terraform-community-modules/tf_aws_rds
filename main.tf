@@ -36,10 +36,10 @@ resource "aws_db_instance" "main_rds_instance" {
 
     # Snapshots and backups
     skip_final_snapshot = "${var.skip_final_snapshot}"
-    copy_tags_to_snapshot = true
+    copy_tags_to_snapshot = "${var.copy_tags_to_snapshot}"
 
     backup_retention_period = "${var.backup_retention_period}"
-    backup_window = "22:00-03:00"
+    backup_window = "${var.backup_window}"
 }
 
 resource "aws_db_parameter_group" "main_rds_instance" {

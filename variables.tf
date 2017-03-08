@@ -101,6 +101,16 @@ variable "skip_final_snapshot" {
     default = true
 }
 
+variable "copy_tags_to_snapshot" {
+    description = "Copy tags from DB to a snapshot"
+    default = true
+}
+
+variable "backup_window" {
+    description = "When AWS can run snapshot, can't overlap with maintenance window"
+    default = "22:00-03:00"
+}
+
 variable "backup_retention_period" {
     type = "string"
     description = "How long will we retain backups"
