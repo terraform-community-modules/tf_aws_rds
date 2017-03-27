@@ -33,6 +33,13 @@ resource "aws_db_instance" "main_rds_instance" {
     # Upgrades
     allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
     auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
+
+    # Snapshots and backups
+    skip_final_snapshot = "${var.skip_final_snapshot}"
+    copy_tags_to_snapshot = "${var.copy_tags_to_snapshot}"
+
+    backup_retention_period = "${var.backup_retention_period}"
+    backup_window = "${var.backup_window}"
 }
 
 resource "aws_db_parameter_group" "main_rds_instance" {
