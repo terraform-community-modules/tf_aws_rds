@@ -116,3 +116,8 @@ variable "backup_retention_period" {
     description = "How long will we retain backups"
     default = 0
 }
+
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  default     = {}
+}
