@@ -40,8 +40,9 @@ resource "aws_db_instance" "main_rds_instance" {
 
     backup_retention_period = "${var.backup_retention_period}"
     backup_window = "${var.backup_window}"
-}
 
+    tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
+} 
 resource "aws_db_parameter_group" "main_rds_instance" {
     name = "${var.rds_instance_identifier}-${replace(var.db_parameter_group, ".", "")}-custom-params"
     family = "${var.db_parameter_group}"
@@ -56,12 +57,16 @@ resource "aws_db_parameter_group" "main_rds_instance" {
     #   name = "character_set_client"
     #   value = "utf8"
     # }
+
+    tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
 
 resource "aws_db_subnet_group" "main_db_subnet_group" {
     name = "${var.rds_instance_identifier}-subnetgrp"
     description = "RDS subnet group"
     subnet_ids = ["${var.subnets}"]
+
+    tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
 
 # Security groups
@@ -69,6 +74,8 @@ resource "aws_security_group" "main_db_access" {
   name = "${var.rds_instance_identifier}-access"
   description = "Allow access to the database"
   vpc_id = "${var.rds_vpc_id}"
+
+  tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
 
 resource "aws_security_group_rule" "allow_db_access" {
