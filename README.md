@@ -22,10 +22,10 @@ This module makes the following assumptions:
 - `database_user` - user name (admin user)
 - `database_password` - password - must be longer than 8 characters
 - `db_parameter_group` - Defaults to `mysql5.6`, for postgres `postgres9.5`
-- `subnets` - List of subnets IDs in a list form, eg. `["sb-1234567890", "sb-0987654321"]`
+- `subnets` - List of subnets IDs in a list form, _e.g._ `["sb-1234567890", "sb-0987654321"]`
 - `database_port` - Database port (needed for a security group)
 - `publicly_accessible` - Defaults to `false`
-- `private_cidr` - CIDR for database security group, eg 10.0.0.0/16
+- `private_cidr` - List of CIDR netblocks for database security group, _e.g._ `["10.0.1.0/24", "10.0.2.0/24]`
 - `rds_vpc_id` - VPC ID DB will be connected to
 - `allow_major_version_upgrade` - Allow upgrading of major version of database (eg. from Postgres 9.5.x to Postgres 9.6.x), default: false
 - `auto_minor_version_upgrade` - Automatically upgrade minor version of the DB (eg. from Postgres 9.5.3 to Postgres 9.5.4), default: true
@@ -33,7 +33,7 @@ This module makes the following assumptions:
 - `copy_tags_to_snapshot` - copy all tags from RDS database to snapshot (default `true`)
 - `backup_retention_period` - backup retention period in days (default: 0), must be `> 0` to enable backups
 - `backup_window` - when to perform DB snapshot, default "22:00-03:00"; can't overlap with maintenance window
-- `tags` - A mapping of tags to assign to the resource.
+- `tags` - A mapping of tags to assign to the DB instance
 
 ## Outputs
 
@@ -79,8 +79,8 @@ variable "availability_zones" {
 You will also need CIDR:
 ```
 variable "private_cidr" {
-    type = "string"
-    default = "10.0.0.0/16"
+    type = "list"
+    default = ["10.0.0.0/16"]
 }
 ```
 
@@ -106,11 +106,11 @@ module "my_rds_instance" {
     # DB Subnet Group Inputs
     subnets = ["${aws_subnet.example.*.id}"] # see above
     rds_vpc_id = "${module.vpc}"
-    private_cidr = "${var.private_cidr}"
+    private_cidr = ["${var.private_cidr}"]
 
     tags {
-        "Terraform" = "true"
-        "Env" = "${terraform.env}"
+        terraform = "true"
+        env       = "${terraform.env}"
     }
 }
 ```
@@ -141,14 +141,22 @@ module "my_rds_instance" {
 - `backup_window`
 - `tags`
 
-# Authors
+# Maintainers
 
-Created and maintained by [Brandon Burton](https://github.com/solarce)
-(brandon@inatree.org).
+* [Brandon Burton](https://github.com/solarce) (brandon@inatree.org) **Creator**
+* [Anton Babenko](https://github.com/antonbabenko)
+* [Steve Huff](https://github.com/hakamadare)
 
 # Contributors
 
 * [Grzegorz Adamowicz](https://github.com/gstlt)
+* [Trung Nguyen](https://github.com/trungnguyen)
+* [Marek Kwasecki](https://github.com/kwach)
+* [Kevin Duane](https://github.com/crackmac)
+* [Keith Grennan](https://github.com/keeth)
+* [Lee Provoost](https://github.com/leeprovoost)
+* Vikas Sakode
+* Carina Digital
 
 # License
 
