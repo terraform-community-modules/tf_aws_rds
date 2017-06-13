@@ -84,7 +84,7 @@ resource "aws_security_group_rule" "allow_db_access" {
     from_port = "${var.database_port}"
     to_port = "${var.database_port}"
     protocol = "tcp"
-    cidr_blocks = "${var.private_cidr}"
+    cidr_blocks = ["${var.private_cidr}"]
 
     security_group_id = "${aws_security_group.main_db_access.id}"
 }
