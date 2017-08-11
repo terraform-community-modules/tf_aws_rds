@@ -66,11 +66,6 @@ variable "apply_immediately" {
   default     = false
 }
 
-variable "maintenance_window" {
-  description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC "
-  default     = "Mon:00:00-Mon:03:00"
-}
-
 variable "database_name" {
   description = "The name of the database to create"
 }

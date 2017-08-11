@@ -30,7 +30,6 @@ This module makes the following assumptions:
 - `allow_major_version_upgrade` - Allow upgrading of major version of database (eg. from Postgres 9.5.x to Postgres 9.6.x), default: false
 - `auto_minor_version_upgrade` - Automatically upgrade minor version of the DB (eg. from Postgres 9.5.3 to Postgres 9.5.4), default: true
 - `apply_immediately` - Specifies whether any database modifications are applied immediately, or during the next maintenance window, default: false
-- `maintenance_window` - The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC, default: "Mon:00:00-Mon:03:00"
 - `skip_final_snapshot` - if `true` (default), DB won't be backed up before deletion
 - `copy_tags_to_snapshot` - copy all tags from RDS database to snapshot (default `true`)
 - `backup_retention_period` - backup retention period in days (default: 0), must be `> 0` to enable backups
@@ -105,17 +104,6 @@ module "my_rds_instance" {
     database_password = "${var.database_password}"
     database_port = "${var.database_port}"
 
-    # Upgrades
-    allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
-    auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
-
-    apply_immediately           = "${var.apply_immediately}"
-    maintenance_window          = "${var.maintenance_window}"
-
-    # Snapshots and backups
-    skip_final_snapshot   = "${var.skip_final_snapshot}"
-    copy_tags_to_snapshot = "${var.copy_tags_to_snapshot}"
-
     # DB Subnet Group Inputs
     subnets = ["${aws_subnet.example.*.id}"] # see above
     rds_vpc_id = "${module.vpc}"
@@ -149,7 +137,6 @@ module "my_rds_instance" {
 - `allow_major_version_upgrade`
 - `auto_minor_version_upgrade`
 - `apply_immediately`
-- `maintenance_window`
 - `skip_final_snapshot`
 - `copy_tags_to_snapshot`
 - `backup_retention_period`
