@@ -35,6 +35,7 @@ resource "aws_db_instance" "main_rds_instance" {
   allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
   auto_minor_version_upgrade  = "${var.auto_minor_version_upgrade}"
   apply_immediately           = "${var.apply_immediately}"
+  maintenance_window          = "${var.maintenance_window}"
 
   # Snapshots and backups
   skip_final_snapshot   = "${var.skip_final_snapshot}"
