@@ -29,6 +29,7 @@ resource "aws_db_instance" "main_rds_instance" {
   # We want the multi-az setting to be toggleable, but off by default
   multi_az            = "${var.rds_is_multi_az}"
   storage_type        = "${var.rds_storage_type}"
+  iops                = "${var.rds_iops}"
   publicly_accessible = "${var.publicly_accessible}"
 
   # Upgrades

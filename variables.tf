@@ -18,6 +18,11 @@ variable "rds_storage_type" {
   default     = "standard"
 }
 
+variable "rds_iops" {
+  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1', default is 0 if rds storage type is not io1"
+  default     = "0"
+}
+
 variable "rds_allocated_storage" {
   description = "The allocated storage in GBs"
 

@@ -13,6 +13,7 @@ This module makes the following assumptions:
 - `rds_is_multi_az` - Defaults to false. Set to true for a multi-az
   instance.
 - `rds_storage_type` - Defaults to standard (magnetic)
+- `rds_iops` - "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1', default is 0 if rds storage type is not io1"
 - `rds_allocated_storage` - The number of GBs to allocate. Input must be an
   integer, e.g. `10`
 - `rds_engine_type` - Engine type, such as `mysql` or `postgres`
@@ -133,6 +134,7 @@ module "my_rds_instance" {
 - `rds_instance_identifier`
 - `rds_is_multi_az`
 - `rds_storage_type`
+- `rds_iops`
 - `rds_allocated_storage`
 - `rds_engine_type`
 - `rds_engine_version`
