@@ -23,7 +23,7 @@ resource "aws_db_instance" "main_rds_instance" {
   vpc_security_group_ids = ["${aws_security_group.main_db_access.id}"]
 
   # We're creating a subnet group in the module and passing in the name
-  db_subnet_group_name = "${aws_db_subnet_group.main_db_subnet_group.name}"
+  db_subnet_group_name = "${aws_db_subnet_group.main_db_subnet_group.id}"
   parameter_group_name = "${aws_db_parameter_group.main_rds_instance.id}"
 
   # We want the multi-az setting to be toggleable, but off by default
