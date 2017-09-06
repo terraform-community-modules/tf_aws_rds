@@ -34,21 +34,25 @@ This module makes the following assumptions:
 - `maintenance_window` - The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi' UTC, default: "Mon:03:00-Mon:04:00"
 - `skip_final_snapshot` - if `true` (default), DB won't be backed up before deletion
 - `copy_tags_to_snapshot` - copy all tags from RDS database to snapshot (default `true`)
-- `backup_retention_period` - backup retention period in days (default: 0), must be `> 0` to enable backups
+- `backup_retention_period` - backup retention period in days (default: 0), must be `> 0` to enable backups or if `read_replica` is `true`
 - `backup_window` - when to perform DB snapshot, default "22:00-03:00"; can't overlap with maintenance window
+- `read_replica` - determines whether to configure RDS instance as a [Read Replica](https://aws.amazon.com/rds/details/read-replicas/)
+- `replication_master_identifier` - RDS ID to configure as replication master (must be set if `read_replica` is `true`)
 - `tags` - A mapping of tags to assign to the DB instance
 
 ## Outputs
 
 - `rds_instance_id` - The ID of the RDS instance
 - `rds_instance_address` - The Address of the RDS instance
+- `rds_instance_endpoint` - The endpoint (`hostname:port` format) of the RDS instance
 - `subnet_group_id` - The ID of the Subnet Group
+- `security_group_id` - The ID of the Security Group
 
 ## Usage
 
 You can use these in your terraform template with the following steps.
 
-1.) If you define subnets as follows (it's an example of one might do that)
+1. If you define subnets as follows (it's an example of one might do that)
 ```
 resource "aws_subnet" "example" {
     count = "${length(var.availability_zones)}"
@@ -87,8 +91,7 @@ variable "private_cidr" {
 }
 ```
 
-2.) Adding a module resource to your template, e.g. `main.tf`
-
+2. Adding a module resource to your template, e.g. `main.tf`
 ```
 module "my_rds_instance" {
   source = "github.com/terraform-community-modules/tf_aws_rds"
@@ -129,8 +132,7 @@ module "my_rds_instance" {
 }
 ```
 
-2.) Setting values for the following variables, either through `terraform.tfvars` or `-var` arguments on the CLI
-
+3. Setting values for the following variables, either through `terraform.tfvars` or `-var` arguments on the CLI
 - `rds_instance_identifier`
 - `rds_is_multi_az`
 - `rds_storage_type`
@@ -157,6 +159,39 @@ module "my_rds_instance" {
 - `backup_retention_period`
 - `backup_window`
 - `tags`
+
+## Read Replicas
+
+To configure one or more read replicas, pass a list of configuration [maps](https://www.terraform.io/docs/configuration/variables.html#maps) to the `read_replicas` parameter.  The only mandatory key in that map is `identifier` (since each replica needs an identifier that is unique per region); however, you can pass any of the parameters documented in the previous section, and they will override the values passed to the module.
+
+Here's an example, based on the example above:
+
+```
+module "my_rds_instance" {
+  source = "github.com/terraform-community-modules/tf_aws_rds"
+
+    # RDS Instance Inputs
+    rds_instance_identifier = "${var.rds_instance_identifier}"
+    rds_allocated_storage = "${var.rds_allocated_storage}"
+    ...
+
+    read_replicas = [
+      {
+        "identifier" = "my_rds_replica_1",
+      },
+      {
+        "identifier"         = "my_rds_replica_2",
+        "rds_instance_class" = "db.t2.small",
+        "maintenance_window" = "Wed:00:00-Wed:01:00",
+      },
+    ]
+}
+```
+
+# Known Issues
+
+* Read replicas are tracked by their position in the list of configuration maps, not by their identifier; this means that if you have two replicas configured, and you delete the first one, then Terraform will reconfgure the first replica according to the second replica's parameters, and then delete the second replica (this is almost certainly not the behavior you want).  You should think of the list of replicas as a stack.
+* When creating a read replica, the replica will be created with the master's DB parameter group on the first `terraform apply`.  A subsequent `terraform apply` will update the parameter group correctly; however, you will need to reboot the replica before this change can take effect.
 
 # Maintainers
 

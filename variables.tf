@@ -141,3 +141,9 @@ variable "tags" {
   description = "A map of tags to add to all resources"
   default     = {}
 }
+
+variable "read_replicas" {
+  type        = "list"
+  description = "List of read replica specifications (maps).  Each map must contain the keys `identifier` and `replicate_source_db`; any other parameter that this module accepts can be optionally passed in a read replica specification, otherwise the parameter passed to the master DB is used as a default value"
+  default     = []
+}

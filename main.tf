@@ -16,8 +16,7 @@ resource "aws_db_instance" "main_rds_instance" {
   name              = "${var.database_name}"
   username          = "${var.database_user}"
   password          = "${var.database_password}"
-
-  port = "${var.database_port}"
+  port              = "${var.database_port}"
 
   # Because we're assuming a VPC, we use this option, but only one SG id
   vpc_security_group_ids = ["${aws_security_group.main_db_access.id}"]
@@ -39,9 +38,8 @@ resource "aws_db_instance" "main_rds_instance" {
   maintenance_window          = "${var.maintenance_window}"
 
   # Snapshots and backups
-  skip_final_snapshot   = "${var.skip_final_snapshot}"
-  copy_tags_to_snapshot = "${var.copy_tags_to_snapshot}"
-
+  skip_final_snapshot     = "${var.skip_final_snapshot}"
+  copy_tags_to_snapshot   = "${var.copy_tags_to_snapshot}"
   backup_retention_period = "${var.backup_retention_period}"
   backup_window           = "${var.backup_window}"
 
