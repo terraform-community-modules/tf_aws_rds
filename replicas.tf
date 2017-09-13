@@ -14,12 +14,11 @@ resource "aws_db_instance" "replica_rds_instance" {
   port                = "${lookup(var.read_replicas[count.index], "database_port", var.database_port)}"
 
   # Read replicas are created in the same security group as the master by default
-  # If this is invalid (e.g. for cross-region replicasion), you must pass one or more alternate security group ID in a comma-delimited string
+  # If this is not the behavior your want, you must pass one or more alternate security group IDs in a comma-delimited string, and those security group IDs must already exist
   vpc_security_group_ids = ["${split(",", lookup(var.read_replicas[count.index], "vpc_security_group_ids", aws_security_group.main_db_access.id))}"]
 
   # Replicas in the same region as the master do not require a subnet group parameter
-  # If configuring cross-region replication, then creating the subnet group is your job :)
-  db_subnet_group_name = "${lookup(var.read_replicas[count.index], "db_subnet_group_name", "")}"
+  db_subnet_group_name = ""
   parameter_group_name = "${aws_db_parameter_group.replica_rds_instance.*.id[count.index]}"
 
   # We want the multi-az setting to be toggleable, but off by default
