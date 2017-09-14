@@ -45,6 +45,9 @@ resource "aws_db_instance" "main_rds_instance" {
   backup_retention_period = "${var.backup_retention_period}"
   backup_window           = "${var.backup_window}"
 
+  # enhanced monitoring
+  monitoring_interval = "${var.monitoring_interval}"
+
   tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
 

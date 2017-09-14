@@ -36,6 +36,7 @@ This module makes the following assumptions:
 - `copy_tags_to_snapshot` - copy all tags from RDS database to snapshot (default `true`)
 - `backup_retention_period` - backup retention period in days (default: 0), must be `> 0` to enable backups
 - `backup_window` - when to perform DB snapshot, default "22:00-03:00"; can't overlap with maintenance window
+- `monitoring_interval` - To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60.
 - `tags` - A mapping of tags to assign to the DB instance
 
 ## Outputs
@@ -156,6 +157,7 @@ module "my_rds_instance" {
 - `copy_tags_to_snapshot`
 - `backup_retention_period`
 - `backup_window`
+- `monitoring_interval`
 - `tags`
 
 # Maintainers
@@ -175,6 +177,7 @@ module "my_rds_instance" {
 * Vikas Sakode
 * Carina Digital
 * [Bill Wang](https://github.com/ozbillwang)
+* [Robin Bowes](https://github.com/robinbowes)
 
 # License
 
