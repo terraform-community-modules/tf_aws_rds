@@ -47,10 +47,8 @@ resource "aws_db_instance" "main_rds_instance" {
 
   # enhanced monitoring
   monitoring_interval = "${var.monitoring_interval}"
-  monitoring_role_arn = "${var.monitoring_role_arn}"
 
-  depends_on = ["${var.depends_on}"]
-  tags       = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
+  tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
 
 resource "aws_db_parameter_group" "main_rds_instance" {
