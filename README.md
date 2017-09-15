@@ -39,7 +39,6 @@ This module makes the following assumptions:
 - `backup_retention_period` - backup retention period in days (default: 0), must be `> 0` to enable backups
 - `backup_window` - when to perform DB snapshot, default "22:00-03:00"; can't overlap with maintenance window
 - `monitoring_interval` - To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60.
-- `monitoring_role_arn` - The ARN for the IAM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs. Must be specified if `monitoring_interval` is anything other than 0.
 - `tags` - A mapping of tags to assign to the DB instance
 
 ## Outputs
@@ -91,34 +90,6 @@ variable "private_cidr" {
 }
 ```
 
-If you want Enhanced Monitoring, you'll need a Monitoring Role:
-```
-resource "aws_iam_role" "rds_monitoring" {
-  name               = "${module.label.id}-rds-monitoring-role"
-  assume_role_policy = "${data.aws_iam_policy_document.rds_monitoring.json}"
-}
-
-resource "aws_iam_role_policy_attachment" "rds_monitoring" {
-  role       = "${aws_iam_role.rds_monitoring.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
-}
-
-data "aws_iam_policy_document" "rds_monitoring" {
-  statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["monitoring.rds.amazonaws.com"]
-    }
-  }
-}
-```
-
 2.) Adding a module resource to your template, e.g. `main.tf`
 
 ```
@@ -144,10 +115,6 @@ module "my_rds_instance" {
 
     apply_immediately           = "${var.apply_immediately}"
     maintenance_window          = "${var.maintenance_window}"
-
-    # Enhanced Monitoring
-    monitoring_interval         = "${var.monitoring_interval}"
-    monitoring_role_arn         = "${var.monitoring_interval == "0" ? "" : aws_iam_role.rds_monitoring.arn}"
 
     # Snapshots and backups
     skip_final_snapshot   = "${var.skip_final_snapshot}"
