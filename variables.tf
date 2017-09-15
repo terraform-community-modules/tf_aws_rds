@@ -95,6 +95,17 @@ variable "db_parameter_group" {
   # default = "postgres9.5"
 }
 
+variable "use_external_parameter_group" {
+  description = "Use parameter group specified by `parameter_group_name` instead of built-in one"
+  default = false
+}
+
+# Use an external parameter group (i.e. defined in caller of this module)
+variable "parameter_group_name" {
+  description = "Parameter group to use instead of the default"
+  default     = ""
+}
+
 variable "publicly_accessible" {
   description = "Determines if database can be publicly available (NOT recommended)"
   default     = false

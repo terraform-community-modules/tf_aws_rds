@@ -23,6 +23,8 @@ This module makes the following assumptions:
 - `database_user` - user name (admin user)
 - `database_password` - password - must be longer than 8 characters
 - `db_parameter_group` - Defaults to `mysql5.6`, for postgres `postgres9.5`
+- `use_external_parameter_group` - Defaults to `false`, if `true` use parameter group specified by `parameter_group_name` instead of a built-in one
+- `parameter_group_name` - name of `aws_db_parameter_group` to use, if `use_external_parameter_group` is set
 - `subnets` - List of subnets IDs in a list form, _e.g._ `["sb-1234567890", "sb-0987654321"]`
 - `database_port` - Database port (needed for a security group)
 - `publicly_accessible` - Defaults to `false`

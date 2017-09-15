@@ -24,7 +24,7 @@ resource "aws_db_instance" "main_rds_instance" {
 
   # We're creating a subnet group in the module and passing in the name
   db_subnet_group_name = "${aws_db_subnet_group.main_db_subnet_group.id}"
-  parameter_group_name = "${aws_db_parameter_group.main_rds_instance.id}"
+  parameter_group_name = "${var.use_external_parameter_group ? var.parameter_group_name : aws_db_parameter_group.main_rds_instance.id}"
 
   # We want the multi-az setting to be toggleable, but off by default
   multi_az            = "${var.rds_is_multi_az}"
@@ -52,6 +52,8 @@ resource "aws_db_instance" "main_rds_instance" {
 }
 
 resource "aws_db_parameter_group" "main_rds_instance" {
+  count = "${var.use_external_parameter_group ? 0 : 1}"
+
   name   = "${var.rds_instance_identifier}-${replace(var.db_parameter_group, ".", "")}-custom-params"
   family = "${var.db_parameter_group}"
 
