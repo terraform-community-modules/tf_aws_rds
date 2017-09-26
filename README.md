@@ -1,5 +1,11 @@
 # tf_aws_rds
 
+# This module is deprecated and [terraform-aws-modules/terraform-aws-rds module](https://github.com/terraform-aws-modules/terraform-aws-rds) published on [the Terraform registry](https://registry.terraform.io/modules/terraform-aws-modules/rds/aws) should be used instead.
+
+## This repository will not have active support any more.
+
+---
+
 A Terraform Template for RDS
 
 This module makes the following assumptions:
